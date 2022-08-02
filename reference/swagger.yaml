@@ -1,0 +1,177 @@
+openapi: 3.0.0
+x-stoplight:
+  id: o1ljuuzaw6kt7
+info:
+  version: 1.0.0
+  title: API Ver detalle - Movilidad de Activos
+  description: API Ver detalle - Movilidad de Activos
+paths:
+  '/solicitudes/{idSolicitud}':
+    get:
+      summary: Retorna el detalle de una solicitud
+      parameters:
+        - name: idSolicitud
+          in: path
+          required: true
+          description: El identificador de la solicitud
+          schema:
+            type: integer
+            example: 1
+            format: int64
+            minimum: 1
+      responses:
+        '200':
+          description: Un JSON con el detalle de la solicitud
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Solicitud'
+        '400':
+          description: La idSolicitud es invalida (no es un numero).
+        '404':
+          description: La idSolicitud no fue encontrada.
+  /reportes/movilidad:
+    post:
+      summary: Retorna el reporte de movilidad
+      responses:
+        '200':
+          description: OK
+          content:
+            application/vnd.ms-excel:
+              schema:
+                $ref: '#/components/schemas/ArrayOfSolicitudes'
+  '/reportes/activos/{tipoIngreso}':
+    post:
+      summary: Retorna el reporte de movilidad
+      parameters:
+        - name: tipoIngreso
+          in: path
+          required: true
+          description: El tipo de ingreso del reporte (Salida / Ingreso)
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/vnd.ms-excel:
+              schema:
+                $ref: '#/components/schemas/ArrayOfSolicitudes'
+        '400':
+          description: El tipo de ingreso es invalido.
+servers:
+  - description: SwaggerHub API Auto Mocking
+    url: 'https://virtserver.swaggerhub.com/BRYANANDRES2000_1/VerDetalleAPI/1.0.0'
+components:
+  schemas:
+    Solicitud:
+      type: object
+      properties:
+        numero_solicitud:
+          type: integer
+          example: 1
+        tipo_movilidad:
+          type: string
+          example: Prestamo Permanente
+        fecha_inicio_vigencia:
+          type: string
+          example: 26/07/2022
+        fecha_fin_vigencia:
+          type: string
+          example: 26/07/2023
+        created_at:
+          type: string
+          example: 26/07/2022
+        observaciones:
+          type: string
+          example: ' '
+        estado_solicitud:
+          type: string
+          example: Pendiente
+        persona_solicita:
+          type: object
+          $ref: '#/components/schemas/PersonaSolicita'
+        persona_autoriza:
+          type: object
+          $ref: '#/components/schemas/PersonaAutoriza'
+        persona_retira:
+          type: object
+          $ref: '#/components/schemas/PersonaAutoriza'
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/Item'
+    PersonaSolicita:
+      type: object
+      properties:
+        id:
+          type: string
+          example: '01'
+        nombres:
+          type: string
+          example: Jorge
+        apellidos:
+          type: string
+          example: Caro
+        cargo:
+          type: string
+          example: Ingeniero
+    PersonaAutoriza:
+      type: object
+      properties:
+        id:
+          type: string
+          example: '01'
+        nombres:
+          type: string
+          example: Andres
+        apellidos:
+          type: string
+          example: Perez
+        cargo:
+          type: string
+          example: Administrador
+    PersonaRetira:
+      type: object
+      properties:
+        tipo_persona:
+          type: string
+          example: Estudiante
+        id:
+          type: string
+          example: '01'
+        documento:
+          type: string
+          example: '1005948965'
+        nombres:
+          type: string
+          example: Carlos
+        apellidos:
+          type: string
+          example: Camargo
+        cargo:
+          type: string
+          example: Estudiante
+    Item:
+      type: object
+      properties:
+        nro_activo:
+          type: string
+          example: '01'
+        detalle:
+          type: string
+          example: Portatil HP
+        cantidad:
+          type: integer
+          example: 2
+        nro_serie:
+          type: string
+          example: Portatil HP
+    ArrayOfItems:
+      type: array
+      items:
+        $ref: '#/components/schemas/Item'
+    ArrayOfSolicitudes:
+      type: array
+      items:
+        $ref: '#/components/schemas/Solicitud'
