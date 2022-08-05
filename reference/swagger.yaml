@@ -59,9 +59,7 @@ paths:
                 $ref: '#/components/schemas/ArrayOfSolicitudes'
         '400':
           description: El tipo de ingreso es invalido.
-servers:
-  - description: SwaggerHub API Auto Mocking
-    url: 'https://virtserver.swaggerhub.com/BRYANANDRES2000_1/VerDetalleAPI/1.0.0'
+servers: []
 components:
   schemas:
     Solicitud:
